@@ -124,7 +124,7 @@ ADMIN SET FRONTEND CONFIG ("key" = "value");
 |insert_load_default_timeout_second|3600|Insert Into 语句的超时时间，单位为秒。|
 |broker_load_default_timeout_second|14400|Broker Load 的超时时间，单位为秒。|
 |min_bytes_per_broker_scanner|67108864|单个 Broker Load 任务最大并发实例数，单位为 Byte。|
-|max_broker_concurrency|100|单个 Broker Load 任务最大并发实例数。|
+|max_broker_concurrency|100|单个 Broker Load 任务最大并发实例数。从 3.1 版本起，StarRocks 不再支持该参数。|
 |export_max_bytes_per_be_per_task|268435456|单个导出任务在单个 BE 上导出的最大数据量，单位为 Byte。|
 |export_running_job_num_limit|5|导出作业最大的运行数目。|
 |export_task_default_timeout_second|7200|导出作业的超时时长，单位为秒。|
@@ -394,7 +394,8 @@ curl -XPOST http://be_host:http_port/api/update_config?configuration_item=value
 | tablet_meta_checkpoint_min_new_rowsets_num            | 10          | N/A    | 自上次 TabletMeta Checkpoint 至今新创建的 rowset 数量。        |
 | tablet_meta_checkpoint_min_interval_secs              | 600         | second | TabletMeta Checkpoint 线程轮询的时间间隔。         |
 | max_runnings_transactions_per_txn_map                 | 100         | N/A    | 每个分区内部同时运行的最大事务数量。            |
-| tablet_max_pending_versions                           | 1000        | N/A    | PrimaryKey 表允许 committed 未 apply 的最大版本数。                 |
+| tablet_max_pending_versions                           | 1000        | N/A    | Primary Key 表每个 tablet 上允许已提交 (committed) 但是未 apply 的最大版本数。    |
+| tablet_max_versions                           | 1000        | N/A    | 每个 tablet 上允许的最大版本数。如果超过该值，新的写入请求会失败。     |
 | max_hdfs_file_handle                                  | 1000        | N/A    | 最多可以打开的 HDFS 文件句柄数量。                             |
 | be_exit_after_disk_write_hang_second                  | 60          | second | 磁盘挂起后触发 BE 进程退出的等待时间。                       |
 | min_cumulative_compaction_failure_interval_sec       | 30          | second | Cumulative Compaction 失败后的最小重试间隔。                      |
